@@ -15,11 +15,15 @@ set -u -e -o pipefail
 
 if [[ "$action" == tmp/* ]]; then
   rm -f $action
-  CFLAGS="-Wall" make $action $@
+  cd tmp
+  NAME=$(basename $action)
+
+  bash_setup BOLD "{{==========================}}"
+  make $NAME $@
   # ls "$(dirname $action)"
+  ../progs/bin/valgrind --track-origins=yes ${NAME}
   bash_setup GREEN "{{==========================}}"
-  ${action}
-  bash_setup GREEN "{{==========================}}"
+  echo ""
   exit 0
 fi
 
