@@ -33,12 +33,8 @@ case $action in
     ;;
 
   *)
-    func_file="$THIS_DIR/bin/lib/${action}.sh"
-    if [[ -s "$func_file" ]]; then
-      source "$func_file"
-      "$action" $@
-      exit 0
-    fi
+    source "$THIS_DIR/../mksh_setup/source/name-to-func.sh"
+    name-to-func "$action"  "$@"
 
     # === Check progs/bin:
     if [[ -f "progs/bin/$action" ]]; then
@@ -48,7 +44,7 @@ case $action in
     fi
 
     # === It's an error:
-    echo "!!! Unknown action: $action" 1>&2
+    mksh_setup RED "!!! {{Unknown action}}: $action"
     exit 1
     ;;
 
