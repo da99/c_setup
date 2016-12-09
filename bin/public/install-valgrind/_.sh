@@ -27,11 +27,11 @@ install-valgrind () {
     ./configure --prefix="$PREFIX"
     make
     make install
-    bash_setup GREEN "=== {{Installed}} to: $PREFIX"
+    sh_color GREEN "=== {{Installed}} to: $PREFIX"
     return 0
   fi
 
-  bash_setup BOLD "=== {{Already installed}} to: $PREFIX"
+  sh_color BOLD "=== {{Already installed}} to: $PREFIX"
 
 } # === end function
 

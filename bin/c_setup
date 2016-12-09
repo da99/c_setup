@@ -18,11 +18,11 @@ if [[ "$action" == tmp/* ]]; then
   cd tmp
   NAME=$(basename $action)
 
-  bash_setup BOLD "{{==========================}}"
+  sh_color BOLD "{{==========================}}"
   make $NAME $@
   # ls "$(dirname $action)"
   ../progs/bin/valgrind --track-origins=yes ${NAME}
-  bash_setup GREEN "{{==========================}}"
+  sh_color GREEN "{{==========================}}"
   echo ""
   exit 0
 fi
