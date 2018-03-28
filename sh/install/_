@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+
+if [[ -z "$@" ]]; then
+  local +x ACTION="default"
+else
+  local +x ACTION="$1"; shift
+fi
+
+case "$ACTION" in
+  default)
+    sudo xbps-install -S valgrind gdb make pkg-config
+    ;;
+
+  valgrind)
+    if which xbps-install ; then
+      # NOTE: March 2018: valgrind-devel is a symbolic link to valgrind,
+      # so it should not be necessary.
+      sudo xbps-install -S valgrind
+    else
+      $THIS_DIR/sh/install.valgrind.sh
+    fi
+    ;;
+  *)
+    echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
+    exit 1
+    ;;
+
+esac
+

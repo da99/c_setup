@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 #
 #
-THE_ARGS="$@"
-THIS_DIR="$(mksh_setup dirname_of_bin "$0")"
+local +x THE_ARGS="$@"
+local +x THIS_DIR="$(dirname "$(dirname "$0")")"
 
 if [[ -z "$@" ]]; then
-  action="watch"
+  local +x action="watch"
 else
-  action=$1
+  local +x action=$1
   shift
 fi
 
@@ -29,11 +29,10 @@ fi
 
 case $action in
   help|--help)
-    mksh_setup print-help $0
+    my_zsh print-help $0
     ;;
 
   *)
-    source "$THIS_DIR/../mksh_setup/bin/source/name-to-func/_.sh"
-    name-to-func "$action"  "$@"
+    "$THIS_DIR/sh/$action/_" $@
     ;;
 esac
