@@ -33,6 +33,7 @@ case $action in
     ;;
 
   *)
+    export THIS_DIR
     "$THIS_DIR/sh/$action/_" $@
     ;;
 esac

@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+
+if [[ -z "$@" ]]; then
+  local +x ACTION="edit"
+else
+  local +x ACTION="$1"; shift
+fi
+
+case "$ACTION" in
+  watch)
+    local +x CMD="my_app specs run"
+    ${=CMD} || :
+    process watch "-r ./" "$CMD"
+    ;;
+
+  run)
+    cd "$THIS_DIR"
+    tmp/out/scratch
+    ;;
+
+  compile)
+    reset
+    cd "$THIS_DIR"
+    mkdir -p tmp/out
+
+    local +x args="$@"
+    set -x
+    gcc tmp/in/scratch.c -o tmp/out/scratch -Werror ${=args}
+    tmp/out/scratch
+    ;;
+
+  edit)
+    cd "$THIS_DIR"
+    mkdir -p tmp/in
+    nvim tmp/in/scratch.c
+    ;;
+
+  *)
+    echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
+    exit 1
+    ;;
+
+esac
+
